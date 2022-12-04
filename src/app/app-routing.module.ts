@@ -9,6 +9,10 @@ const routes: Routes = [
         (pm) => pm.PhotomanagerModule
       ),
   },
+  {
+    path: '**',
+    redirectTo: 'photomanager',
+  },
 ];
 
 @NgModule({
