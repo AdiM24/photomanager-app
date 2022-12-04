@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-photomanager',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./photomanager.component.css'],
 })
 export class PhotomanagerComponent {
+  shouldComponentUpdate = false;
 
+  uploadedPhoto(event: any) {
+    console.log('here');
+    this.shouldComponentUpdate = true;
+    // this.shouldComponentUpdate = false;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PhotoUploaderService } from '../services/photo-uploader.service';
@@ -9,6 +9,7 @@ import { PhotoUploaderService } from '../services/photo-uploader.service';
   styleUrls: ['./photo-uploader.component.css'],
 })
 export class PhotoUploaderComponent {
+  @Output() onPhotoUpload: EventEmitter<any> = new EventEmitter();
   allowedList = ['png', 'jpeg', 'jpg', 'png', 'gif'];
 
   selectedPhotos?: FileList;
@@ -68,6 +69,7 @@ export class PhotoUploaderComponent {
             this.message.push(msg);
             // this.imageInfos = this.photoUploadService.getFiles();
           }
+          this.onPhotoUpload.emit();
         },
         error: (err: any) => {
           this.progressInfo[idx].value = 0;

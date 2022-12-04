@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PhotoModel } from '../models/photo-model';
 import { PhotoListService } from '../services/photo-list.service';
@@ -10,7 +16,9 @@ import { TagUpdateDialogComponent } from '../tag-update-dialog/tag-update-dialog
   templateUrl: './photo-list.component.html',
   styleUrls: ['./photo-list.component.css'],
 })
-export class PhotoListComponent implements OnInit {
+export class PhotoListComponent implements OnInit, OnChanges {
+  @Input() shouldComponentUpdate: boolean = false;
+
   photoList: PhotoModel[] = [];
   displayedColumns: string[] = ['thumb', 'name', 'tags', 'createdAt', 'action'];
 
@@ -19,6 +27,11 @@ export class PhotoListComponent implements OnInit {
     private readonly sanitizer: DomSanitizer,
     public dialog: MatDialog
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.shouldComponentUpdate);
+    this.updateList();
+  }
 
   ngOnInit() {
     this.photoListService.getPhotos().subscribe({
@@ -59,23 +72,7 @@ export class PhotoListComponent implements OnInit {
 
         this.photoListService.updateTags(itemToSend).subscribe({
           next: (res) => {
-            const tempPhotoList: PhotoModel[] = [];
-            this.photoListService.getPhotos().subscribe({
-              next: (res) => {
-                res.forEach((resItem: PhotoModel) => {
-                  resItem.createdAt = new Date(
-                    resItem.createdAt
-                  ).toLocaleString();
-
-                  tempPhotoList.push(resItem);
-                });
-                this.photoList = tempPhotoList;
-                this.getImageThumbs();
-              },
-              error: (err) => {
-                console.error(err);
-              },
-            });
+            this.updateList();
           },
           error: (err) => {
             console.error('Could not perform update');
@@ -100,21 +97,25 @@ export class PhotoListComponent implements OnInit {
   removeImage(photo: PhotoModel) {
     this.photoListService.removeImage(photo.photoId).subscribe({
       next: () => {
-        const tempPhotoList: PhotoModel[] = [];
-        this.photoListService.getPhotos().subscribe({
-          next: (res) => {
-            res.forEach((resItem: PhotoModel) => {
-              resItem.createdAt = new Date(resItem.createdAt).toLocaleString();
+        this.updateList();
+      },
+    });
+  }
 
-              tempPhotoList.push(resItem);
-            });
-            this.photoList = tempPhotoList;
-            this.getImageThumbs();
-          },
-          error: (err) => {
-            console.error(err);
-          },
+  updateList() {
+    const tempPhotoList: PhotoModel[] = [];
+    this.photoListService.getPhotos().subscribe({
+      next: (res) => {
+        res.forEach((resItem: PhotoModel) => {
+          resItem.createdAt = new Date(resItem.createdAt).toLocaleString();
+
+          tempPhotoList.push(resItem);
         });
+        this.photoList = tempPhotoList;
+        this.getImageThumbs();
+      },
+      error: (err) => {
+        console.error(err);
       },
     });
   }

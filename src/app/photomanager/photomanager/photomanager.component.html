@@ -1,7 +1,10 @@
 <div>
-  <app-photo-uploader></app-photo-uploader>
+  <app-photo-uploader
+    (onPhotoUpload)="uploadedPhoto($event)"></app-photo-uploader>
 </div>
 
 <div>
-    <app-photo-list></app-photo-list>
+  <app-photo-list
+  [shouldComponentUpdate]="shouldComponentUpdate"
+  ></app-photo-list>
 </div>
