@@ -1,0 +1,9 @@
+.tag-dialog-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.tag-dialog-form-item {
+    margin: 1rem;
+}

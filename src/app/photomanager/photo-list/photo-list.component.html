@@ -1,0 +1,65 @@
+<div class="container">
+  <table
+    *ngIf="photoList.length"
+    mat-table
+    [dataSource]="photoList"
+    class="mat-elevation-z8"
+  >
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="thumb">
+      <th mat-header-cell *matHeaderCellDef>Thumb</th>
+      <td mat-cell *matCellDef="let element">
+        <img class="image-thumbnail" [src]="element.thumb" />
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="tags">
+      <th mat-header-cell *matHeaderCellDef>Tags</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        (click)="updateTags(element)"
+        style="cursor: pointer"
+      >
+        {{ element.tags }}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef>Created at</th>
+      <td mat-cell *matCellDef="let element">{{ element.createdAt }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td
+        style="cursor: pointer"
+        mat-cell
+        *matCellDef="let element"
+        (click)="removeImage(element)"
+      >
+        <button
+          mat-fab
+          color="primary"
+          aria-label="Example icon button with a delete icon"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

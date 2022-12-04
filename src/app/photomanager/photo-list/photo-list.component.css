@@ -1,0 +1,9 @@
+.image-thumbnail {
+  width: 100px;
+  height: 100px;
+}
+
+.container {
+    margin: 2rem;
+    padding: 2rem;
+}

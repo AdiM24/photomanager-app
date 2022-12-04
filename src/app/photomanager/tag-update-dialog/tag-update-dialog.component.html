@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>Photo - {{ data.name }}</h1>
+<div mat-dialog-content>
+  <div class="tag-dialog-form">
+    <p>Tags:</p>
+    <mat-form-field appearance="fill" class="tag-dialog-form-item">
+      <mat-label>System tags</mat-label>
+      <input matInput [value]="data.systemTags" readonly />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="tag-dialog-form-item">
+      <input
+        matInput
+        name="tags"
+        [value]="data.tags"
+        (input)="handleInputValueChange($event)"
+      />
+      <mat-hint>Separate tags with a space</mat-hint>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="sendTags()" cdkFocusInitial>Ok</button>
+</div>
